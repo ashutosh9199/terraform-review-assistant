@@ -1,6 +1,4 @@
-import React from 'react';
 import { Box, Drawer, AppBar, Toolbar, List, Typography, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import DashboardIcon from '@mui/material/Icon';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import DescriptionIcon from '@mui/icons-material/Description';

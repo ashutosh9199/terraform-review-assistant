@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Typography, Button, Box, CircularProgress } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { uploadFiles, analyzeProject } from '../services/api';
+import { uploadFiles } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
 export default function Upload() {

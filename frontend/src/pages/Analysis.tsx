@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Typography, CircularProgress, Box, Card, CardContent, Chip } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 import { analyzeProject } from '../services/api';
