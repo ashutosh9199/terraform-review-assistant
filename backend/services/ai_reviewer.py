@@ -18,7 +18,7 @@ class AIReviewer:
         
         # Mock AI finding based on resources
         for res in resources:
-            if res.resource_type == "azurerm_virtual_machine":
+            if res.resource_type == "azurerm_virtual_machine" or res.resource_type == "azurerm_linux_virtual_machine":
                 findings.append(Finding(
                     resource_type=res.resource_type,
                     resource_name=res.name,

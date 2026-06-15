@@ -12,6 +12,29 @@ class RuleEngine:
                 findings.extend(self._check_storage_account(res))
             elif res.resource_type == "azurerm_kubernetes_cluster":
                 findings.extend(self._check_aks(res))
+            elif res.resource_type == "azurerm_public_ip":
+                findings.append(Finding(
+                    resource_type=res.resource_type,
+                    resource_name=res.name,
+                    issue="Public IP addresses expose resources directly to the internet",
+                    risk_level="High",
+                    category="Security",
+                    recommendation="Remove Public IP and route traffic through a Load Balancer, App Gateway, or Azure Firewall.",
+                    business_impact="Significantly increases the attack surface.",
+                    code_example="# Remove this resource"
+                ))
+            elif res.resource_type == "azurerm_linux_virtual_machine":
+                if "tags" not in res.properties:
+                    findings.append(Finding(
+                        resource_type=res.resource_type,
+                        resource_name=res.name,
+                        issue="Virtual Machine is missing tags",
+                        risk_level="Low",
+                        category="Governance",
+                        recommendation="Add required tags (Environment, Project, Owner) to the VM.",
+                        business_impact="Reduces cost visibility and operational governance.",
+                        code_example='tags = {\n  Environment = "Production"\n}'
+                    ))
             # add more checks here
         return findings
 
