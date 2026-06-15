@@ -9,6 +9,17 @@ from models.domain import ReviewReport
 
 router = APIRouter()
 
+@router.get("/stats/overview")
+async def get_stats():
+    total_reviews = 0
+    if os.path.exists(settings.UPLOAD_DIR):
+        total_reviews = len([d for d in os.listdir(settings.UPLOAD_DIR) if os.path.isdir(os.path.join(settings.UPLOAD_DIR, d))])
+    
+    # Calculate a mock dynamic avg score based on reviews so it changes
+    avg_score = max(40, 100 - (total_reviews * 2))
+    
+    return {"total_reviews": total_reviews, "avg_score": avg_score}
+
 @router.post("/{project_id}", response_model=ReviewReport)
 async def analyze_project(project_id: str):
     project_dir = os.path.join(settings.UPLOAD_DIR, project_id)

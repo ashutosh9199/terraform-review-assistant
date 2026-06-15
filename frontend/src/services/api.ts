@@ -15,6 +15,11 @@ export const uploadFiles = async (file: File) => {
   return response.data;
 };
 
+export const getStats = async () => {
+  const response = await api.get('/analyze/stats/overview');
+  return response.data;
+};
+
 export const analyzeProject = async (projectId: string) => {
   const response = await api.post(`/analyze/${projectId}`);
   return response.data;
