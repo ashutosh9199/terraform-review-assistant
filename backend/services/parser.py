@@ -25,9 +25,7 @@ class TerraformParser:
                 
             if 'resource' in obj:
                 for res_block in obj['resource']:
-                    # res_block is typically a dict like {'azurerm_storage_account': {'name': {...}}}
                     for res_type, res_dict in res_block.items():
-                        # hcl2 sometimes leaves quotes around keys
                         clean_type = res_type.strip('"')
                         for res_name, res_props in res_dict.items():
                             clean_name = res_name.strip('"')
@@ -37,6 +35,17 @@ class TerraformParser:
                                 properties=res_props,
                                 file_path=file_path
                             ))
+                            
+            if 'module' in obj:
+                for mod_block in obj['module']:
+                    for mod_name, mod_props in mod_block.items():
+                        clean_name = mod_name.strip('"')
+                        resources.append(Resource(
+                            resource_type="module",
+                            name=clean_name,
+                            properties=mod_props,
+                            file_path=file_path
+                        ))
         except Exception as e:
             print(f"Error parsing file {file_path}: {e}")
         return resources
