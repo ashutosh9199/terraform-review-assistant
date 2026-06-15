@@ -35,6 +35,28 @@ class RuleEngine:
                         business_impact="Reduces cost visibility and operational governance.",
                         code_example='tags = {\n  Environment = "Production"\n}'
                     ))
+            elif res.resource_type == "azurerm_key_vault_secret":
+                findings.append(Finding(
+                    resource_type=res.resource_type,
+                    resource_name=res.name,
+                    issue="Hardcoded Secret Value in Terraform",
+                    risk_level="High",
+                    category="Security",
+                    recommendation="Avoid passing secret values directly in Terraform state. Use Azure Key Vault references or environment variables.",
+                    business_impact="Secrets can be exposed in plaintext within the tfstate file.",
+                    code_example='value = "@Microsoft.KeyVault(SecretUri=...)"'
+                ))
+            elif res.resource_type == "module":
+                findings.append(Finding(
+                    resource_type=res.resource_type,
+                    resource_name=res.name,
+                    issue="Module version not pinned",
+                    risk_level="Medium",
+                    category="Operations",
+                    recommendation="Always pin Terraform modules to a specific version or git commit hash.",
+                    business_impact="Upstream module changes could break infrastructure unexpectedly.",
+                    code_example='source = "git::https://...v1.0.0"'
+                ))
             # add more checks here
         return findings
 
