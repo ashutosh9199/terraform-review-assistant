@@ -7,7 +7,27 @@ from services.ai_reviewer import AIReviewer
 from services.scoring import ScoringEngine
 from models.domain import ReviewReport
 
+import datetime
+
 router = APIRouter()
+
+@router.get("/history")
+async def get_history():
+    history = []
+    if os.path.exists(settings.UPLOAD_DIR):
+        for d in os.listdir(settings.UPLOAD_DIR):
+            dir_path = os.path.join(settings.UPLOAD_DIR, d)
+            if os.path.isdir(dir_path):
+                ctime = os.path.getctime(dir_path)
+                dt = datetime.datetime.fromtimestamp(ctime).strftime('%Y-%m-%d %H:%M:%S')
+                files_count = sum([len(files) for r, _, files in os.walk(dir_path)])
+                history.append({
+                    "project_id": d,
+                    "date": dt,
+                    "files_count": files_count
+                })
+    history.sort(key=lambda x: x["date"], reverse=True)
+    return history
 
 @router.get("/stats/overview")
 async def get_stats():

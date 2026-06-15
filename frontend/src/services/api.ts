@@ -20,6 +20,11 @@ export const getStats = async () => {
   return response.data;
 };
 
+export const getHistory = async () => {
+  const response = await api.get('/analyze/history');
+  return response.data;
+};
+
 export const analyzeProject = async (projectId: string) => {
   const response = await api.post(`/analyze/${projectId}`);
   return response.data;
