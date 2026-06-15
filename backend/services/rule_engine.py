@@ -7,6 +7,20 @@ class RuleEngine:
 
     def analyze(self, resources: List[Resource]) -> List[Finding]:
         findings = []
+        
+        if len(resources) == 0:
+            findings.append(Finding(
+                resource_type="file",
+                resource_name="upload",
+                issue="No actionable Terraform resources or modules found",
+                risk_level="Low",
+                category="Operations",
+                recommendation="Upload a file containing standard 'resource' or 'module' blocks. Files with only outputs or variables cannot be analyzed for infrastructure security.",
+                business_impact="Engine bypassed due to lack of scanable infrastructure blocks.",
+                code_example='resource "azurerm_resource_group" "rg" {}'
+            ))
+            return findings
+
         for res in resources:
             if res.resource_type == "azurerm_storage_account":
                 findings.extend(self._check_storage_account(res))
